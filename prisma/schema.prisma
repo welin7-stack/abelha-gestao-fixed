@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Entrega {
+  id               String   @id @default(cuid())
+  nf               String
+  cte              String?
+  pedido           Int
+  cliente          Int
+  loja             Int      @default(1)
+  nome             String   @default("")
+  valorBru         Float    @default(0)
+  classe           String   @default("")
+  volume           Float    @default(0)
+  pesoBruto        Float    @default(0)
+  pesoLiq          Float    @default(0)
+  cidade           String   @default("")
+  uf               String   @default("")
+  codTransp        Int      @default(0)
+  transportadora   String   @default("")
+  dataEnvio        String?
+  picking          Float?
+  dataEmissaoNf    String?
+  dataLiberacao    String?
+  emissPed         String?
+  valFret          Float    @default(0)
+  tpFrete          String   @default("")
+  previsaoEntrega  String?
+  entregaRealizada String?
+  situacao         String   @default("")
+  deadline         Float?
+  ocorrencia       String?
+  realizado        Float?
+  fulfillment      Float?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([nf])
+  @@index([pedido])
+  @@index([cliente])
+  @@index([transportadora])
+  @@index([uf])
+  @@index([situacao])
+  @@index([dataEnvio])
+}
