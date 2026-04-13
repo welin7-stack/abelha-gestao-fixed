@@ -4,8 +4,15 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
+// Em ambientes Next.js (Edge/Serverless), as variáveis de ambiente as vezes 
+// não são injetadas no construtor se não forem passadas explicitamente no datasources.
 const prismaClient = new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+    },
+  },
 })
 
 export const db = globalForPrisma.prisma ?? prismaClient
