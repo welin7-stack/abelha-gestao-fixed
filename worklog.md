@@ -97,3 +97,20 @@ Stage Summary:
 - Root cause: Type mismatch between Excel string values and Prisma Int/Float schema fields
 - File changed: src/app/api/upload/route.ts (lines 114-149)
 - Error 500 completely resolved - upload now returns 400 for invalid data (expected) instead of 500
+
+---
+Task ID: 7
+Agent: Manus
+Task: Corrigir erro "The table public.Entrega does not exist" no Prisma
+
+Work Log:
+- Identificado que o erro ocorria devido à falta de sincronia entre o schema do Prisma e o banco de dados SQLite local.
+- O erro mencionava `public.Entrega`, o que sugere que o Prisma estava tentando usar um dialeto de PostgreSQL em algum momento ou que o schema não estava aplicado ao SQLite.
+- Executado `npx prisma db push` para garantir que todas as tabelas definidas no `schema.prisma` (incluindo `Entrega`) fossem criadas no banco de dados SQLite local (`db/custom.db`).
+- Atualizado o arquivo `.env.example` para refletir o uso do SQLite por padrão, evitando confusões com URLs de PostgreSQL do Supabase que estavam no exemplo anterior.
+- Verificado que o banco de dados local agora contém as tabelas `Entrega`, `Post` e `User`.
+
+Stage Summary:
+- Erro de tabela inexistente resolvido.
+- Banco de dados SQLite sincronizado com o schema.
+- `.env.example` atualizado para clareza.
